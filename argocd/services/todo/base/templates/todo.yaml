@@ -19,6 +19,8 @@ spec:
           - name: APP_PORT
             value: {{ .Values.env.APP_PORT }}
           - name: ALLOWED_HOSTS
+            value: "{{ .Values.env.ALLOWED_HOSTS }}"
+          - name: GIN_RELEASE
             value: "{{ .Values.env.GIN_RELEASE }}"
           - name: GIN_RELEASE
             value: {{ .Values.env.DB_SSL_MODE }}
