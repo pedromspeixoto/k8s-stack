@@ -1,0 +1,119 @@
+basePath: /
+definitions:
+  posts.PostRequest:
+    properties:
+      content:
+        type: string
+    required:
+    - content
+    type: object
+info:
+  contact: {}
+  description: Posts API - Create blog posts and store in database
+  title: Posts API
+  version: "1.0"
+paths:
+  /health:
+    get:
+      consumes:
+      - application/json
+      description: This API is used to get the environment and dependencies status.
+      produces:
+      - application/json
+      responses: {}
+      summary: Get service status.
+      tags:
+      - health
+  /v1/posts:
+    get:
+      consumes:
+      - application/json
+      description: This API is used to list all post request created
+      parameters:
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Gets all post requests.
+      tags:
+      - posts
+    post:
+      consumes:
+      - application/json
+      description: This API is used to create a new post request
+      parameters:
+      - description: Post Payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/posts.PostRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: Create a new post request.
+      tags:
+      - posts
+  /v1/posts/{post_id}:
+    delete:
+      consumes:
+      - application/json
+      description: This API is used to delete an post request created
+      parameters:
+      - description: Post Id
+        in: path
+        name: post_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete an post request.
+      tags:
+      - posts
+    get:
+      consumes:
+      - application/json
+      description: This API is used to get post request created
+      parameters:
+      - description: Post Id
+        in: path
+        name: post_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      summary: Get an post request.
+      tags:
+      - posts
+    put:
+      consumes:
+      - application/json
+      description: This API is used to update an post request
+      parameters:
+      - description: Post Id
+        in: path
+        name: post_id
+        required: true
+        type: string
+      - description: Post Update Payload
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/posts.PostRequest'
+      produces:
+      - application/json
+      responses: {}
+      summary: Updates an post request.
+      tags:
+      - posts
+swagger: "2.0"

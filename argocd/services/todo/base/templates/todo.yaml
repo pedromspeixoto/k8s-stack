@@ -1,0 +1,45 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-base
+  namespace: {{ .Release.Namespace }}
+spec:
+  template:
+    spec:
+      containers:
+        - image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          env:
+          - name: ENV
+            value: {{ .Values.env.ENV }}
+          - name: APP_PORT
+            value: {{ .Values.env.APP_PORT }}
+          - name: ALLOWED_HOSTS
+            value: {{ .Values.env.ALLOWED_HOSTS }}
+          - name: DB_DRIVER
+            value: {{ .Values.env.DB_DRIVER }}
+          - name: DB_HOST
+            value: {{ .Values.env.DB_HOST }}
+          - name: DB_PORT
+            value: {{ .Values.env.DB_PORT }}
+          - name: DB_USER
+            value: {{ .Values.env.DB_USER }}
+          - name: DB_PASSWORD
+            value: {{ .Values.env.DB_PASSWORD }}
+          - name: DB_NAME
+            value: {{ .Values.env.DB_NAME }}
+          - name: DB_SSL_MODE
+            value: {{ .Values.env.DB_SSL_MODE }}
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          resources:
+            limits:
+              cpu: {{ .Values.resources.limits.cpu }}
+              memory: {{ .Values.resources.limits.memory }}
+            requests:
+              cpu: {{ .Values.resources.requests.cpu }}
+              memory: {{ .Values.resources.requests.memory }}
+          autoscaling:
+            minScale: {{ .Values.autoscaling.minScale }}
+            maxScale: {{ .Values.autoscaling.maxScale }}

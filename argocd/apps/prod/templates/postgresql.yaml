@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: postgresql
+  namespace: prod
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prod
+  project: default
+  source:
+    chart: postgresql
+    helm:
+      values: |
+        global:
+          postgresql:
+            auth:
+              postgresPassword: password
+              username: username
+              password: password
+              database: prod_todo_db
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 15.3.0
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

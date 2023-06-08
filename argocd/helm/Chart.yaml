@@ -1,0 +1,13 @@
+apiVersion: v2
+name: argo-cd
+version: 1.0.0
+dependencies:
+  - name: argo-cd
+    version: 5.36.0
+    appVersion: v2.7.4
+    repository: https://argoproj.github.io/argo-helm
+    home: https://github.com/argoproj/argo-helm
+    icon: https://argo-cd.readthedocs.io/en/stable/assets/logo.png
+    sources:
+      - https://github.com/argoproj/argo-helm/tree/main/charts/argo-cd
+      - https://github.com/argoproj/argo-cd

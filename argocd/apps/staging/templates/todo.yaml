@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: todo-api
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: staging
+  project: default
+  source:
+    helm:
+      valueFiles:
+        - ./argocd/services/todo/base/envs/staging.yaml
+      chart: ./argocd/services/todo/base
+    repoURL: https://github.com/pedromspeixoto/k8s-stack.git
+    targetRevision: develop
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
