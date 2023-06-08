@@ -13,7 +13,7 @@ spec:
   source:
     helm:
       valueFiles:
-        - argocd/services/todo/envs/prod.yaml
+        - ../envs/prod.yaml
     path: argocd/services/todo/base
     repoURL: https://github.com/pedromspeixoto/k8s-stack.git
     targetRevision: main
