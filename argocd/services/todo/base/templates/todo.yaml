@@ -1,10 +1,15 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: {{ .Release.Name }}-base
+  name: todo-api-{{ .Release.Namespace }}
   namespace: {{ .Release.Namespace }}
 spec:
   template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/min-scale: "{{ .Values.autoscaling.minScale }}"
+        autoscaling.knative.dev/max-scale: "{{ .Values.autoscaling.maxScale }}"
+        autoscaling.knative.dev/window: "40s"
     spec:
       containers:
         - image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
@@ -12,7 +17,7 @@ spec:
           - name: ENV
             value: {{ .Values.env.ENV }}
           - name: APP_PORT
-            value: {{ .Values.env.APP_PORT }}
+            value: "{{ .Values.env.APP_PORT }}"
           - name: ALLOWED_HOSTS
             value: "{{ .Values.env.ALLOWED_HOSTS }}"
           - name: DB_DRIVER
@@ -20,7 +25,7 @@ spec:
           - name: DB_HOST
             value: {{ .Values.env.DB_HOST }}
           - name: DB_PORT
-            value: {{ .Values.env.DB_PORT }}
+            value: "{{ .Values.env.DB_PORT }}"
           - name: DB_USER
             value: {{ .Values.env.DB_USER }}
           - name: DB_PASSWORD
@@ -31,7 +36,7 @@ spec:
             value: {{ .Values.env.DB_SSL_MODE }}
           ports:
             - containerPort: 8080
-              name: http
+              name: http1
               protocol: TCP
           resources:
             limits:
@@ -40,6 +45,3 @@ spec:
             requests:
               cpu: {{ .Values.resources.requests.cpu }}
               memory: {{ .Values.resources.requests.memory }}
-          autoscaling:
-            minScale: {{ .Values.autoscaling.minScale }}
-            maxScale: {{ .Values.autoscaling.maxScale }}
