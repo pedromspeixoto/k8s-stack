@@ -1,21 +1,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: staging
+  name: prod
+  namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     server: https://kubernetes.default.svc
-    namespace: staging
-  project: default
+    namespace: prod
+  project: prod-project
   source:
     helm:
       valueFiles:
-        - ./argocd/services/todo/base/envs/staging.yaml
-      chart: ./argocd/services/todo/base
+        - ./argocd/services/todo/base/envs/prod.yaml
+    chart: ./argocd/services/todo/base
     repoURL: https://github.com/pedromspeixoto/k8s-stack.git
-    targetRevision: develop
+    targetRevision: main
   syncPolicy:
     automated:
       prune: true
