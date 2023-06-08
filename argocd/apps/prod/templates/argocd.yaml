@@ -1,3 +1,4 @@
+apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
   name: prod-project
@@ -28,7 +29,7 @@ spec:
   source:
     path: argocd/helm
     repoURL: https://github.com/pedromspeixoto/k8s-stack.git
-    targetRevision: develop
+    targetRevision: main
   syncPolicy:
     automated:
       prune: true
