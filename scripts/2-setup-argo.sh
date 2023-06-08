@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 ARGO_NAMESPACE="argocd"
 RELEASE_NAME="argo-cd"

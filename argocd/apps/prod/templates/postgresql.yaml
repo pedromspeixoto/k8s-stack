@@ -22,7 +22,7 @@ spec:
               password: password
               database: prod_todo_db
     repoURL: https://charts.bitnami.com/bitnami
-    targetRevision: 15.3.0
+    targetRevision: 12.5.5
   syncPolicy:
     automated:
       prune: true
