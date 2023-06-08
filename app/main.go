@@ -28,7 +28,7 @@ type Config struct {
 	DbUser     string `envconfig:"DB_USER" required:"false" default:"postgres"`
 	DbPassword string `envconfig:"DB_PASSWORD" required:"false" default:"password"`
 	DbHost     string `envconfig:"DB_HOST" required:"false" default:"localhost"`
-	DbPort     int    `envconfig:"DB_PORT" required:"false" default:"5432"`
+	DbPort     string `envconfig:"DB_PORT" required:"false" default:"5432"`
 	DbName     string `envconfig:"DB_NAME" required:"false" default:"local_todos"`
 	DbSslMode  string `envconfig:"DB_SSL_MODE" required:"false" default:"disable"`
 
@@ -68,7 +68,7 @@ func main() {
 	}
 
 	// create postgresql database connection string
-	connStr := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
+	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		cfg.DbHost, cfg.DbPort, cfg.DbUser, cfg.DbPassword, cfg.DbName, cfg.DbSslMode,
 	)
 
