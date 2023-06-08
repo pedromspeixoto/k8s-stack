@@ -108,11 +108,12 @@ The default username for ArgoCD is `admin`. The password is auto-generated and w
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
 
-5. Finally, we can configure ArgoCD to manage the cluster for staging and prod namespaces. We can do this by running the following command:
+5. Finally, we can configure ArgoCD to manage the cluster for the argo, staging and prod namespaces. We can do this by running the following command:
 
 ```bash
-helm template argocd/apps/staging/ | kubectl apply -f -
-helm template argocd/apps/prod/ | kubectl apply -f -
+helm template argocd/apps/argocd/ --namespace argocd | kubectl apply -f -
+helm template argocd/apps/staging/ --namespace argocd | kubectl apply -f -
+helm template argocd/apps/prod/ --namespace argocd | kubectl apply -f -
 ```
 
 ### Script
