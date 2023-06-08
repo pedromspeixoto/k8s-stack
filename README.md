@@ -124,6 +124,14 @@ Example to setup the cluster:
 
 ```bash
 ./scripts/1-setup-cluster.sh
+./scripts/2-setup-argo.sh
+./scripts/3-configure-argo-sync.sh
+```
+
+Example to delete the cluster:
+
+```bash
+./scripts/4-delete-cluster.sh
 ```
 
 ## Demo

@@ -15,37 +15,8 @@ else
   kubectl create namespace "$ARGO_NAMESPACE"
 fi
 
-# Check if the Argo CD Helm chart is already installed
-helm list -n "$ARGO_NAMESPACE" | grep -q "$RELEASE_NAME"
-if [ $? -eq 0 ]; then
-  echo "Argo CD Helm chart is already installed in namespace $ARGO_NAMESPACE."
-else
-  echo "Installing Argo CD Helm chart in namespace $ARGO_NAMESPACE..."
-  helm install "$RELEASE_NAME" argocd/helm --namespace "$ARGO_NAMESPACE"
-fi
-
-# Wait for ArgoCD to be ready
-SERVICE_NAME="argo-cd-argocd-server"
-TIMEOUT=300  # 5 minutes timeout (in seconds)
-
-# Calculate the end time for the timeout
-END_TIME=$((SECONDS + TIMEOUT))
+# Install argocd using helm
+helm install "$RELEASE_NAME" argocd/helm --namespace "$ARGO_NAMESPACE"
 
 # Wait for the service to be available
-echo "Waiting for service $SERVICE_NAME in namespace $ARGO_NAMESPACE to be available..."
-
-while [[ $SECONDS -lt $END_TIME ]]; do
-  SERVICE_STATUS=$(kubectl get service "$SERVICE_NAME" -n "$ARGO_NAMESPACE" -o jsonpath='{.spec.clusterIP}')
-
-  if [[ "$SERVICE_STATUS" != "<pending>" ]]; then
-    echo "Service $SERVICE_NAME is now available. You can start port forwarding."
-    break
-  fi
-
-  echo "Service $SERVICE_NAME is not available yet. Current status: $SERVICE_STATUS"
-  sleep 5
-done
-
-if [[ $SECONDS -ge $END_TIME ]]; then
-  echo "Timeout: Service $SERVICE_NAME did not become available within the specified time."
-fi
+echo "Wait a few seconds before service becomes available..."
