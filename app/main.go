@@ -72,6 +72,8 @@ func main() {
 		cfg.DbHost, cfg.DbPort, cfg.DbUser, cfg.DbPassword, cfg.DbName, cfg.DbSslMode,
 	)
 
+	fmt.Printf("Connecting to database: %s\n", connStr)
+
 	// connect to the database
 	db, err := sql.Open(cfg.DbDriver, connStr)
 	if err != nil {
