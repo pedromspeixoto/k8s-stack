@@ -14,7 +14,7 @@ spec:
           - name: APP_PORT
             value: {{ .Values.env.APP_PORT }}
           - name: ALLOWED_HOSTS
-            value: {{ .Values.env.ALLOWED_HOSTS }}
+            value: "{{ .Values.env.ALLOWED_HOSTS }}"
           - name: DB_DRIVER
             value: {{ .Values.env.DB_DRIVER }}
           - name: DB_HOST
