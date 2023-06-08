@@ -10,7 +10,7 @@ env:
   DB_PORT: "5432"
   DB_USER: username
   DB_PASSWORD: password
-  DB_NAME: postgres
+  DB_NAME: prod_todo_db
   DB_SSL_MODE: disable
 resources:
   limits:
