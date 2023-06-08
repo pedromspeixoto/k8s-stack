@@ -4,6 +4,7 @@ env:
   ENV: prod
   APP_PORT: 8080
   ALLOWED_HOSTS: "*"
+  GIN_RELEASE: release
   DB_DRIVER: postgres
   DB_HOST: postgresql-prod.services.svc.cluster.local
   DB_PORT: 5432

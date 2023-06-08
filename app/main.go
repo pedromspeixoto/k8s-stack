@@ -191,6 +191,7 @@ func main() {
 
 func loadConfig(cfgFile string) (cfg *Config, err error) {
 	if cfgFile != "" {
+		fmt.Printf("Loading config from file: %s", cfgFile)
 		if cfg, err = readCfgFromFile(cfgFile); err != nil {
 			return nil, err
 		}
@@ -211,6 +212,7 @@ func readCfgFromFile(cfgFile string) (*Config, error) {
 
 func readCfgFromEnv() (*Config, error) {
 	cfg := Config{}
+	fmt.Println("Loading config from env variables")
 	if err := envconfig.Process("", &cfg); err != nil {
 		return nil, errors.WithStack(err)
 	}

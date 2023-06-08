@@ -5,6 +5,7 @@ env:
   ENV: staging
   APP_PORT: 8080
   ALLOWED_HOSTS: "*"
+  GIN_RELEASE: debug
   DB_DRIVER: postgres
   DB_HOST: postgresql-staging.services.svc.cluster.local
   DB_PORT: 5432

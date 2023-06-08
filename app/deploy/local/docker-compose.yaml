@@ -15,6 +15,17 @@ services:
         context: ../../
         dockerfile: deploy/local/Dockerfile
     restart: unless-stopped
+    environment:
+      ENV: development
+      APP_PORT: 8080
+      ALLOWED_HOSTS: "*"
+      DB_DRIVER: postgres
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_USER: username
+      DB_PASSWORD: password
+      DB_NAME: local_todo_db
+      DB_SSL_MODE: disable
     depends_on:
       - db
     links:

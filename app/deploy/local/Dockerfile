@@ -28,7 +28,6 @@ RUN apt-get update  \
 # Copy built binaries
 RUN mkdir -p /opt/todo-api
 COPY --from=build /app/bin/todo-api /opt/todo-api/
-COPY --from=build /app/deploy/local/local.env /opt/todo-api/service.env
 COPY --from=build /app/scripts /opt/todo-api/scripts
 COPY --from=build /app/migrations /opt/todo-api/migrations
 WORKDIR /opt/todo-api
