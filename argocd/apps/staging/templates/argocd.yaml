@@ -1,15 +1,32 @@
 apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: staging-project
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - namespace: staging
+    server: https://kubernetes.default.svc
+  orphanedResources:
+    warn: false
+  sourceRepos:
+  - '*'
+---
+apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argo-cd
-  namespace: staging
+  name: argocd-staging
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
+  project: staging-project
   destination:
     server: https://kubernetes.default.svc
     namespace: staging
-  project: default
+  project: staging-project
   source:
     path: argocd/helm
     repoURL: https://github.com/pedromspeixoto/k8s-stack.git

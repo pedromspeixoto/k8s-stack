@@ -1,15 +1,15 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: postgresql
-  namespace: staging
+  name: postgresql-staging
+  namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: staging
-  project: default
+  project: staging-project
   source:
     chart: postgresql
     helm:

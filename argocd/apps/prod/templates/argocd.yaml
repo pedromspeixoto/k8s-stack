@@ -1,15 +1,30 @@
+kind: AppProject
+metadata:
+  name: prod-project
+  namespace: argocd
+spec:
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  destinations:
+  - namespace: prod
+    server: https://kubernetes.default.svc
+  orphanedResources:
+    warn: false
+  sourceRepos:
+  - '*'
+---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: argo-cd
-  namespace: prod
+  name: argocd-prod
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: prod
-  project: default
+  project: prod-project
   source:
     path: argocd/helm
     repoURL: https://github.com/pedromspeixoto/k8s-stack.git
