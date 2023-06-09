@@ -15,6 +15,7 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: ^1.19
+
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -47,7 +48,7 @@ jobs:
             if [[ "${{ github.ref_name }}" == "main" ]]; then
               target_env="prod"
             fi
-            values_file_path="./argocd/services/todo/envs/$target_env/$target_env.yaml"
+            values_file_path="./argocd/services/todo/envs/$target_env.yaml"
             echo "File path to be replaced: $values_file_path"
             version=$(cat $values_file_path | grep tag: | awk '{print $2}')
             sed -i "s/$version/$git_hash/" $values_file_path
