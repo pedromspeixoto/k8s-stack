@@ -21,6 +21,10 @@ This project has a simple demo on how to setup a serverless kubernetes cluster w
 - Knative (Serverless) - https://knative.dev/docs/install/knative-with-kind/
 - ArgoCD (GitOps) - https://argoproj.github.io/argo-cd/getting_started/
 
+A short overview of the k8s cluster setup is presented below:
+
+![Kubernetes Architecture Overview](/assets/K8s_architecture.png)
+
 The CI pipeline builds the project and deploys the application to the cluster using ArgoCD. The application will be deployed to a single k8s cluster (for demo purposes) to a different namespace depending on the triggering branch.
 
 - The main branch will deploy to the `prod` namespace
@@ -29,7 +33,6 @@ The CI pipeline builds the project and deploys the application to the cluster us
 A short diagram on how the CI/CD project will be structured is presented below (for the sake of the demo, the infrastructure deployment manifests are in the same repo as the application code but in a real world scenario they would be in a separate repo):
 
 ![CI/CD Pipeline Diagram](/assets/CICD_Pipeline_Diagram.png)
-
 
 ## Prerequisites
 
