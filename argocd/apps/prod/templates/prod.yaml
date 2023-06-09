@@ -11,10 +11,7 @@ spec:
     namespace: prod
   project: prod-project
   source:
-    helm:
-      valueFiles:
-        - ./argocd/services/todo/base/envs/prod.yaml
-    chart: ./argocd/services/todo/base
+    path: argocd/apps/prod/
     repoURL: https://github.com/pedromspeixoto/k8s-stack.git
     targetRevision: main
   syncPolicy:
