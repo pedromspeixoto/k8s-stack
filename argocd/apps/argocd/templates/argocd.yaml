@@ -29,6 +29,8 @@ spec:
   - group: '*'
     kind: '*'
   destinations:
+  - namespace: argocd
+    server: https://kubernetes.default.svc
   - namespace: prod
     server: https://kubernetes.default.svc
   orphanedResources:
@@ -46,6 +48,8 @@ spec:
   - group: '*'
     kind: '*'
   destinations:
+  - namespace: argocd
+    server: https://kubernetes.default.svc
   - namespace: staging
     server: https://kubernetes.default.svc
   orphanedResources:

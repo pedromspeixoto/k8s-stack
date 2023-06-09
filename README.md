@@ -62,19 +62,49 @@ Please follow the below steps to start the kind local cluster with Istio and Kna
 kind create cluster --name k8s-demo --config "./configs/kind-cluster.yaml"
 ```
 
+Once the cluster is created you need to setup the kubectl context with the following command:
+
+```bash
+kubectl cluster-info --context kind-k8s-demo
+```
+
 2. Install Istio
 
 ```bash
-istioctl install --set profile=demo -y
+istioctl install -f ./configs/istio.yaml -y
 ```
 
 3. Install Knative
 
 ```bash
-kubectl apply --filename
+## Installing required custom resources for knative serving component on the created kind cluster
+kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.10.1/serving-crds.yaml
+
+## Installing the core components of knative serving on the created kind cluster
+kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.10.1/serving-core.yaml
+
+## Installing the knative Istio controller on the created kind cluster
+kubectl apply -f https://github.com/knative/net-istio/releases/download/knative-v1.10.0/net-istio.yaml
+
+## Configuring DNS to use sslip.io - sslip.io provides a wildcard DNS setup that will automatically resolve to the IP address you put in front of sslip.io.
+kubectl patch configmap/config-domain --namespace knative-serving --type merge --patch '{"data":{"127.0.0.1.nip.io":""}}'
+
+## Configure mTLS for knative serving which secures service-to-service communication within the cluster
+kubectl label namespace knative-serving istio-injection=enabled
+kubectl apply -f configs/knative-mtls-config.yaml
 ```
 
-4. Install ArgoCD using Helm
+4. Creating the namespaces that we will use for our applications
+
+```bash
+## Create namespaces
+kubectl create namespace staging
+kubectl create namespace prod
+kubectl label namespace staging istio-injection=enabled
+kubectl label namespace prod istio-injection=enabled
+```
+
+5. Install ArgoCD using Helm
 
 Before we install the ArgoCD chart, we need to generate a Chart.lock file for Argo. We do this so that our dependency (the original argo-cd chart) can be rebuilt. This is important later when we let Argo CD manage this chart to avoid errors. We can do this by running the following commands:
 
@@ -95,6 +125,8 @@ Now we can install ArgoCD with the following command:
 helm install argo-cd argocd/helm --namespace argocd
 ```
 
+Please note that this might take some time to setup, so please be patient until all of the services are up and running before proceeding.
+
 Once Argo is installed you can forward the serve port with the following command:
 
 ```bash
@@ -111,13 +143,44 @@ The default username for ArgoCD is `admin`. The password is auto-generated and w
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
 
-5. Finally, we can configure ArgoCD to manage the cluster for the argo, staging and prod namespaces. We can do this by running the following command:
+6. Finally, we can configure ArgoCD to manage the cluster for the argo, staging and prod namespaces. 
+
+First, we configure the argo central application:
 
 ```bash
 helm template argocd/apps/argocd/ --namespace argocd | kubectl apply -f -
+```
+
+After a few moments, the argo application should be visible as running in the ArgoCD UI:
+
+![ArgoCD Application](/assets/ArgoCD_Application.png)
+
+Once argo is configured and visible within the UI, we can configure the staging and prod namespaces:
+
+```bash
 helm template argocd/apps/staging/ --namespace argocd | kubectl apply -f -
 helm template argocd/apps/prod/ --namespace argocd | kubectl apply -f -
 ```
+
+All applications should now be visible in the ArgoCD UI, and, from now on, all additional apps that we add for both staging or prod, will be automatically synced by Argo.
+
+Example for the staging application:
+
+- Overview of the Staging root app:
+
+![ArgoCD Staging Application](/assets/ArgoCD_Staging_Application.png)
+
+- Status of the apps of the Staging root app:
+
+![ArgoCD Staging Application Apps](/assets/ArgoCD_Staging_Application_Apps.png)
+
+- Overview of the Postgres staging app and all dependencies that were deployed:
+
+![ArgoCD Staging Postgres App](/assets/ArgoCD_Staging_Postgres_App.png)
+
+- Overview of the Golang staging app and all dependencies that were deployed:
+
+![ArgoCD Staging Golang App](/assets/ArgoCD_Staging_Golang_App.png)
 
 ### Script
 
