@@ -164,6 +164,10 @@ helm template argocd/apps/prod/ --namespace argocd | kubectl apply -f -
 
 All applications should now be visible in the ArgoCD UI, and, from now on, all additional apps that we add for both staging or prod, will be automatically synced by Argo.
 
+Overview of all applications:
+
+![ArgoCD Applications](/assets/ArgoCD_Applications.png)
+
 Example for the staging application:
 
 - Overview of the Staging root app:
