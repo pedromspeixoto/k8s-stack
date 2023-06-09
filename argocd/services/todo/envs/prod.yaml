@@ -1,5 +1,5 @@
 image:
-  tag: master
+  tag: b944315d0ff61c3b8fc30cbda082a4a9910ac9e2
 env:
   ENV: prod
   APP_PORT: "8080"
