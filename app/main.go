@@ -113,7 +113,7 @@ func main() {
 
 		rows, err := db.Query("SELECT * FROM todos")
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve todo items"})
+			c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to retrieve todo items. Query failed: %v", err)})
 			return
 		}
 		defer rows.Close()
@@ -122,13 +122,32 @@ func main() {
 			var todo Todo
 			err := rows.Scan(&todo.ID, &todo.TodoID, &todo.Description, &todo.ExpirationDate, &todo.CreatedAt, &todo.UpdatedAt)
 			if err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to retrieve todo items"})
+				c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to retrieve todo items. Scan failed: %v", err)})
 				return
 			}
 			todos = append(todos, todo)
 		}
 
 		c.JSON(http.StatusOK, todos)
+	})
+
+	// define the route to get a single todo item
+	router.GET(fmt.Sprintf("%s/:id", baseUrl), func(c *gin.Context) {
+		id := c.Param("id")
+
+		var todo Todo
+		row := db.QueryRow("SELECT * FROM todos WHERE id=$1", id)
+		err := row.Scan(&todo.ID, &todo.TodoID, &todo.Description, &todo.ExpirationDate, &todo.CreatedAt, &todo.UpdatedAt)
+		if err != nil {
+			if err == sql.ErrNoRows {
+				c.JSON(http.StatusNotFound, gin.H{"error": fmt.Sprintf("Todo item with id %s not found", id)})
+				return
+			}
+			c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Failed to retrieve todo item. Query failed: %v", err)})
+			return
+		}
+
+		c.JSON(http.StatusOK, todo)
 	})
 
 	// define the route for inserting a todo item

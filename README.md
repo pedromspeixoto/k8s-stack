@@ -9,7 +9,7 @@ Table of Contents
       * [Setup](#setup)
          * [Manual](#manual)
          * [Script](#script)
-      * [Demo](#demo)
+      * [Usage](#usage)
       * [References](#references)
 
 ## Overview
@@ -204,9 +204,37 @@ Example to delete the cluster:
 ./scripts/4-delete-cluster.sh
 ```
 
-## Demo
+## Usage
 
-TBD
+Once the cluster is up and running and both the staging and prod applications are configured, you can test the application with the following commands:
+
+- For staging:
+
+Checking the KNative url that was created for the service
+
+```bash
+kubectl get ksvc -n staging
+```
+
+Getting the list of configured todos
+
+```bash
+curl -X GET http://todo-api-staging.staging.127.0.0.1.nip.io/api/v1/todos
+```
+
+- For prod:
+
+Checking the KNative url that was created for the service
+
+```bash
+kubectl get ksvc -n prod
+```
+
+Getting the list of configured todos
+
+```bash
+curl -X GET http://todo-api-prod.prod.127.0.0.1.nip.io/api/v1/todos
+```
 
 ## References
 

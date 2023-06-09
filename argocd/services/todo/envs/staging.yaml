@@ -1,5 +1,5 @@
 image:
-  tag: develop
+  tag: 7eb74364c580143906fd34a80a90e1a6ba89b6fb
 env:
   ENV: staging
   APP_PORT: "8080"

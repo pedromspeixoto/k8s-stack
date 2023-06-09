@@ -6,7 +6,6 @@ CREATE TABLE IF NOT EXISTS todos (
     description TEXT,
     expiration_date DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 -- +migrate StatementCommit
