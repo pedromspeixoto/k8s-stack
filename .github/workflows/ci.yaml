@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]
 
   workflow_dispatch:
 
@@ -28,4 +28,4 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: ${{ secrets.DOCKER_USERNAME }}/todo-api
-          tags: ${{ github.sha }}, latest
+          tags: ${{ github.ref }}, ${{ github.sha }}
